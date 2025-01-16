@@ -1,14 +1,8 @@
 // Set up canvas
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
-// Resize canvas to fit the screen
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 // Game variables
 let character = {
@@ -101,7 +95,7 @@ function update() {
         character.jumping = false;
     }
 
-    // Obstacles
+    // Add obstacles
     if (frames % 120 === 0) {
         const obstacleHeight = Math.random() * 50 + 30;
         const randomImage = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
@@ -111,12 +105,21 @@ function update() {
             width: 50,
             height: obstacleHeight,
             image: randomImage,
+            passed: false, // New property to track scoring
         });
-        score++;
     }
 
+    // Update obstacle positions and check if they pass the character
     obstacles.forEach((obs, index) => {
         obs.x -= 5;
+
+        // Check if the obstacle has passed the player
+        if (!obs.passed && obs.x + obs.width < character.x) {
+            obs.passed = true; // Mark the obstacle as passed
+            score++; // Increment the score
+        }
+
+        // Remove obstacles that move out of the canvas
         if (obs.x + obs.width < 0) {
             obstacles.splice(index, 1);
         }
@@ -143,17 +146,9 @@ function gameLoop() {
     }
 }
 
-// Jump functionality (keyboard)
+// Jump functionality
 window.addEventListener("keydown", e => {
     if (e.code === "Space" && !character.jumping) {
-        character.jumping = true;
-        character.velocityY = -10;
-    }
-});
-
-// Jump functionality (touch)
-document.getElementById("jump-button").addEventListener("click", () => {
-    if (!character.jumping) {
         character.jumping = true;
         character.velocityY = -10;
     }

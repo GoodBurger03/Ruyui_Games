@@ -3,18 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Catch the Stars: Anime Edition</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Anime Runner Game</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="game">
-      <div id="background"></div>
-      <img id="character" src="character.png" alt="Character" />
-      <div id="stars"></div>
-      <div id="score">Score: 0</div>
+    <div id="game-container">
+      <canvas id="gameCanvas"></canvas>
+      <div class="anime-text">Run and Jump!</div>
+      <div id="upload-container">
+        <label for="character-upload">Upload Character:</label>
+        <input
+          type="file"
+          id="character-upload"
+          accept="image/png, image/jpeg"
+        />
+      </div>
+      <div id="game-over">
+        <p>You ran into the wall!</p>
+        <button id="try-again">Try Again</button>
+        <button id="quit">Quit</button>
+        <p id="score"></p>
+      </div>
     </div>
-    <audio id="catchSound" src="catch.mp3"></audio>
-    <audio id="bgMusic" src="anime-music.mp3" loop></audio>
     <script src="script.js"></script>
   </body>
 </html>

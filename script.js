@@ -31,7 +31,7 @@ let gameOver = false;
 const obstacleImages = ["obstacle1.png", "obstacle2.png", "obstacle3.png"]; // Example obstacle images
 
 const defaultCharacterImage = new Image();
-defaultCharacterImage.src = 'default_character.png'; // Replace with your default character image
+defaultCharacterImage.src = 'loshmi.png'; // Replace with your default character image
 character.image = defaultCharacterImage;
 
 // Handle character upload

@@ -1,8 +1,14 @@
 // Set up canvas
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+// Resize canvas to fit the screen
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 // Game variables
 let character = {
@@ -25,7 +31,7 @@ let gameOver = false;
 const obstacleImages = ["obstacle1.png", "obstacle2.png", "obstacle3.png"]; // Example obstacle images
 
 const defaultCharacterImage = new Image();
-defaultCharacterImage.src = 'loshmi.png'; // Replace with your default character image
+defaultCharacterImage.src = 'default_character.png'; // Replace with your default character image
 character.image = defaultCharacterImage;
 
 // Handle character upload
@@ -95,7 +101,7 @@ function update() {
         character.jumping = false;
     }
 
-    // Add obstacles
+    // Obstacles
     if (frames % 120 === 0) {
         const obstacleHeight = Math.random() * 50 + 30;
         const randomImage = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
@@ -105,21 +111,12 @@ function update() {
             width: 50,
             height: obstacleHeight,
             image: randomImage,
-            passed: false, // New property to track scoring
         });
+        score++;
     }
 
-    // Update obstacle positions and check if they pass the character
     obstacles.forEach((obs, index) => {
         obs.x -= 5;
-
-        // Check if the obstacle has passed the player
-        if (!obs.passed && obs.x + obs.width < character.x) {
-            obs.passed = true; // Mark the obstacle as passed
-            score++; // Increment the score
-        }
-
-        // Remove obstacles that move out of the canvas
         if (obs.x + obs.width < 0) {
             obstacles.splice(index, 1);
         }
@@ -146,9 +143,17 @@ function gameLoop() {
     }
 }
 
-// Jump functionality
+// Jump functionality (keyboard)
 window.addEventListener("keydown", e => {
     if (e.code === "Space" && !character.jumping) {
+        character.jumping = true;
+        character.velocityY = -10;
+    }
+});
+
+// Jump functionality (touch)
+document.getElementById("jump-button").addEventListener("click", () => {
+    if (!character.jumping) {
         character.jumping = true;
         character.velocityY = -10;
     }
